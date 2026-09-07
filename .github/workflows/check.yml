@@ -16,3 +16,5 @@ jobs:
           persist-credentials: false
       - run: python3 scripts/rules.py check
       - run: python3 scripts/test_rules.py
+      - run: python3 scripts/cidr.py check
+      - run: python3 scripts/test_cidr.py

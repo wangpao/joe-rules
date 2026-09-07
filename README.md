@@ -1,14 +1,15 @@
 # Joe Rules
 
-三个按服务分组的域名规则集。**直接维护 `.list`，没有 JSON 配置、生成版 JSON 或重复服务目录。**
+四类 Joe 路由规则：三个按服务分组的域名集，以及一份中国 IP 网段兜底集。**直接维护 `.list`，没有 JSON 配置、生成版 JSON 或重复服务目录。**
 
 | 文件 | 用途 | 原始首版 |
 | --- | --- | --- |
 | [cn-services.list](cn-services.list) | 中国常见服务直连 | 70 个服务入口，323 条 |
 | [global-direct.list](global-direct.list) | 国外服务直连例外：Apple、Microsoft、Steam 的具体功能 | 7 个功能组，47 条 |
+| [cn-cidr.list](cn-cidr.list) | 中国 IPv4 / IPv6 直连兜底 | 8,348 条 IPv4，7,009 条 IPv6 |
 | [explicit-proxy.list](explicit-proxy.list) | 常用服务明确代理 | 24 个服务组，163 条 |
 
-原始数据来自 [V2Fly domain-list-community](https://github.com/v2fly/domain-list-community)，MIT 许可。每份文件头记录其上游版本；服务组中的 `@sources` 注释记录来源文件。没有复制 Blackmatrix7 的规则数据，也没有整类导入 geosite:cn 或大型集团全集。需随分发保留 [LICENSE](LICENSE) 中的上游版权和许可声明。
+三个域名集的原始数据来自 [V2Fly domain-list-community](https://github.com/v2fly/domain-list-community)，MIT 许可。每份文件头记录其上游版本；服务组中的 `@sources` 注释记录来源文件。没有复制 Blackmatrix7 的规则数据，也没有整类导入 geosite:cn 或大型集团全集。需随分发保留 [LICENSE](LICENSE) 中的上游版权和许可声明。
 
 ## 使用
 
@@ -17,12 +18,23 @@
 - https://raw.githubusercontent.com/wangpao/joe-rules/main/cn-services.list
 - https://raw.githubusercontent.com/wangpao/joe-rules/main/global-direct.list
 - https://raw.githubusercontent.com/wangpao/joe-rules/main/explicit-proxy.list
+- https://raw.githubusercontent.com/wangpao/joe-rules/main/cn-cidr.list
 
 建议先执行用户覆盖、本地网络和可选拦截规则，然后依次：Global Direct → Explicit Proxy → CN Services → CN CIDR → 默认代理。三个域名名单要求无交叉重叠；域名与 CIDR 的重叠按域名优先处理。
 
 `DOMAIN` 只匹配完整主机；`DOMAIN-SUFFIX` 匹配自身及点分隔的子域。`#` 行是注释，消费者应忽略。List 不带策略字段，加载时绑定 DIRECT 或用户选定的 PROXY。Joe 如需 JSON 或二进制，应在客户端构建中自行转换。
 
-本仓库不包含 CN CIDR 数据、代理节点、DNS 配置或在线签名机制。普通连接、直接 IP 连接和语音 UDP 是否可用仍取决于客户端实现与网络；这些规则没有经过多运营商真机验证。
+本仓库包含讨论中的四类规则；代理节点、DNS 配置、局域网策略和在线签名机制由客户端另行实现。普通连接、直接 IP 连接和语音 UDP 是否可用仍取决于客户端实现与网络；这些规则没有经过多运营商真机验证。
+
+## CN CIDR 数据
+
+`cn-cidr.list` 合并 IPv4 与 IPv6，分别使用 `IP-CIDR,网段` 和 `IP-CIDR6,网段`，不附策略字段；Joe 加载时绑定 DIRECT。只在域名规则之后作为兜底使用。它表示 DB-IP 判定为 CN 的 IP 范围，不等同于中国服务的全部地址。
+
+来源：[DB-IP IP to Country Lite](https://db-ip.com/db/download/ip-to-country-lite)，每月更新，Lite 覆盖率与精度低于其完整版。**IP Geolocation by DB-IP (https://db-ip.com)**。本衍生数据按 **CC BY 4.0** 提供，完整许可见 [LICENSE-CIDR.txt](LICENSE-CIDR.txt)，不适用域名数据和脚本的 MIT 许可。分发时保留来源、许可和修改说明；DB-IP 不为 Joe 背书。
+
+修改内容：仅筛选 country == CN 的记录，将起止地址转换为精确 CIDR，并合并相邻可聚合网段。数据月份、源下载链接和 SHA-256 都记录在 `.list` 头部，不另存 JSON 或重复 IPv4/IPv6 文件。
+
+独立的 **Update CN CIDR** 工作流每周一北京时间 06:23 检查当月数据（已收录当月时跳过下载），也可手动运行。新版产生独立 PR，审核合并后发布；源文件不可用、格式错误或地址覆盖总量变动超过 10% 时失败并保留已发布文件。构建校验转换前后地址覆盖完全一致、无重复、无重叠且最小聚合。这些检查不代表地理定位准确性验证。
 
 ## GitHub Actions 自动更新
 
@@ -85,4 +97,4 @@ python3 scripts/test_rules.py
 
 [Apple 网络端点说明](https://support.apple.com/en-us/101555) 与 [Microsoft 更新端点说明](https://learn.microsoft.com/en-us/troubleshoot/windows-client/installing-updates-features-roles/windows-update-issues-troubleshooting) 用于核对功能边界；实际域名从 MIT 上游派生。官方文章正文未复制进仓库。
 
-修改：按服务筛选、收窄部分域名为具体子域或精确主机、去重、分组、添加 Joe 路由策略和自动检查。上游不代表为 Joe 的策略或连接效果背书。仓库工具与本衍生规则按 MIT 提供，上游版权声明保留在 LICENSE。
+修改：按服务筛选、收窄部分域名为具体子域或精确主机、去重、分组、添加 Joe 路由策略和自动检查。上游不代表为 Joe 的策略或连接效果背书。仓库工具与三个衍生域名集按 MIT 提供（CN CIDR 数据按 CC BY 4.0 提供），上游版权声明保留在 LICENSE。

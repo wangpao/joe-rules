@@ -1,0 +1,32 @@
+name: Update CN CIDR
+on:
+  schedule:
+    - cron: '23 22 * * 0' # Monday 06:23 Asia/Shanghai
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: update-cn-cidr
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - run: python3 scripts/cidr.py update
+      - run: python3 scripts/cidr.py check
+      - run: python3 scripts/test_cidr.py
+      - uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7
+        with:
+          branch: automation/update-cn-cidr
+          add-paths: cn-cidr.list
+          commit-message: 'rules: update CN CIDR from DB-IP'
+          title: 'rules: update CN CIDR from DB-IP'
+          body: 'Monthly DB-IP Country Lite CN data. Exact coverage and aggregation checks passed. Review the diff before merging.'
+          delete-branch: true

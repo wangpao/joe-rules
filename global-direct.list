@@ -1,0 +1,79 @@
+# Joe Global Direct | DIRECT
+# Upstream: v2fly/domain-list-community @ 9ff2d61d76ce28edb513920a2727f222793041c0
+# License: MIT; see LICENSE. Edit this file directly; there is no JSON source.
+# DOMAIN = exact host; DOMAIN-SUFFIX = apex and dot-separated subdomains.
+
+# ===== Apple 系统更新 =====
+# @sources: apple-update
+# 仅系统更新、恢复及其目录/校验端点；直连是本版策略，尚无本地速度测量。
+DOMAIN,appldnld.apple.com
+DOMAIN,configuration.apple.com
+DOMAIN,fcs-keys-pub-prod.cdn-apple.com
+DOMAIN,gdmf-ados.apple.com
+DOMAIN,gdmf.apple.com
+DOMAIN,gg.apple.com
+DOMAIN,gs.apple.com
+DOMAIN,gsra.apple.com
+DOMAIN,ig.apple.com
+DOMAIN,mesu.apple.com
+DOMAIN,oscdn.apple.com
+DOMAIN,osrecovery.apple.com
+DOMAIN,skl.apple.com
+DOMAIN,swcdn.apple.com
+DOMAIN,swdist.apple.com
+DOMAIN,swdownload.apple.com
+DOMAIN,swscan.apple.com
+DOMAIN,updates-http.cdn-apple.com
+DOMAIN,updates.cdn-apple.com
+DOMAIN,wkms-public.apple.com
+
+# ===== Apple 推送 =====
+# @sources: apple
+# APNs 功能子域；不扩展到整个 Apple 或 iCloud。
+DOMAIN-SUFFIX,push.apple.com
+
+# ===== Apple 激活与联网探测 =====
+# @sources: apple
+# 避免设备激活和门户联网探测无谓依赖代理。
+DOMAIN,albert.apple.com
+DOMAIN,captive.apple.com
+
+# ===== Apple App 下载与静态资源 =====
+# @sources: apple itunes
+# 限定下载/资源主机；静态图片可能被多种 Apple 内容共用；不直连整个 itunes 或 apps.apple.com。
+DOMAIN,amp-api-updates.apps.apple.com
+DOMAIN,apps.mzstatic.com
+DOMAIN,iosapps.itunes.apple.com
+DOMAIN,is1-ssl.mzstatic.com
+DOMAIN,is2-ssl.mzstatic.com
+DOMAIN,is3-ssl.mzstatic.com
+DOMAIN,is4-ssl.mzstatic.com
+DOMAIN,is5-ssl.mzstatic.com
+DOMAIN,osxapps.itunes.apple.com
+
+# ===== Windows 更新下载 =====
+# @sources: microsoft
+# 优先直连已被上游标注 @cn 的更新载荷与证书列表下载；更新发现/登录等未全量覆盖。
+DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com
+DOMAIN-SUFFIX,download.windowsupdate.com
+DOMAIN,ctldl.windowsupdate.com
+
+# ===== Office 更新下载 =====
+# @sources: microsoft
+# 仅 Office CDN 下载主机；不扩展到 Microsoft 365、OneDrive 或 Copilot。
+DOMAIN,officecdn-microsoft-com.akamaized.net
+DOMAIN,officecdn.microsoft.com
+
+# ===== Steam 国内下载 =====
+# @sources: steam
+# 仅采用上游 @cn 下载主机；不把 steamcontent.com 全球下载域整类直连。
+DOMAIN,alibaba.cdn.steampipe.steamcontent.com
+DOMAIN,client-update.queniuqe.com
+DOMAIN,dl.steam.clngaa.com
+DOMAIN,lv.queniujq.cn
+DOMAIN,st.dl.bscstorage.net
+DOMAIN,st.dl.eccdnx.com
+DOMAIN,st.dl.pinyuncloud.com
+DOMAIN,steampowered.com.8686c.com
+DOMAIN,steamstatic.com.8686c.com
+DOMAIN,xz.pphimalayanrt.com

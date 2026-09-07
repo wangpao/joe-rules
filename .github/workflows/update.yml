@@ -1,0 +1,50 @@
+name: Update rules
+on:
+  schedule:
+    - cron: '23 22 * * 0' # Monday 06:23 Asia/Shanghai
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: update-rules
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        ruleset: [cn-services, global-direct, explicit-proxy]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Read upstream data (never execute upstream code)
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: v2fly/domain-list-community
+          path: .upstream
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Update selected list and check all lists
+        env:
+          RULESET: ${{ matrix.ruleset }}
+        run: |
+          python3 scripts/rules.py update --target "$RULESET.list" --upstream .upstream --report "$RUNNER_TEMP/update.md"
+          python3 scripts/rules.py check
+          python3 scripts/test_rules.py
+          cat "$RUNNER_TEMP/update.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Open or update a reviewable PR
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/update-${{ matrix.ruleset }}
+          add-paths: ${{ matrix.ruleset }}.list
+          commit-message: 'rules: update ${{ matrix.ruleset }} from upstream'
+          title: 'rules: update ${{ matrix.ruleset }}'
+          body-path: ${{ runner.temp }}/update.md
+          delete-branch: true

@@ -1,0 +1,270 @@
+# Joe Explicit Proxy | PROXY
+# Upstream: v2fly/domain-list-community @ 9ff2d61d76ce28edb513920a2727f222793041c0
+# License: MIT; see LICENSE. Edit this file directly; there is no JSON source.
+# DOMAIN = exact host; DOMAIN-SUFFIX = apex and dot-separated subdomains.
+
+# ===== Google 搜索与账户 =====
+# @sources: google
+# 搜索和账户产品端点，不导入整个 Google 集团。
+DOMAIN-SUFFIX,accounts.google.com
+DOMAIN-SUFFIX,consent.google.com
+DOMAIN-SUFFIX,myaccount.google.com
+DOMAIN-SUFFIX,www.google.com
+DOMAIN-SUFFIX,www.google.com.hk
+DOMAIN,google.com
+DOMAIN,google.com.hk
+
+# ===== Gmail =====
+# @sources: google
+# 邮件访问与登录采用代理；共享登录由 Google 账户条目提供。
+DOMAIN-SUFFIX,gmail.com
+DOMAIN-SUFFIX,googlemail.com
+DOMAIN,mail.google.com
+
+# ===== Google Drive、Docs 与日历 =====
+# @sources: google
+# 常用协作产品；未全量覆盖 Google Workspace。
+DOMAIN-SUFFIX,calendar.google.com
+DOMAIN-SUFFIX,docs.google.com
+DOMAIN-SUFFIX,drive.google.com
+DOMAIN-SUFFIX,googledrive.com
+DOMAIN-SUFFIX,meet.google.com
+
+# ===== Google 产品资源 =====
+# @sources: google
+# 用户内容及明确列出的资源/认证主机；不扩展到 googleapis.com 或 gstatic.com 全域。
+# @allow-cn: full:ssl.gstatic.com
+# 上游 @cn 不是直连保证。本版将该 Google 共享静态资源主机与 Google 服务统一送至用户代理；仅精确主机，不扩大至 gstatic.com。
+# @allow-cn: full:www.gstatic.com
+# 上游 @cn 不是直连保证。本版将该 Google 共享静态资源主机与 Google 服务统一送至用户代理；仅精确主机，不扩大至 gstatic.com。
+DOMAIN-SUFFIX,googleusercontent.com
+DOMAIN,accounts.googleapis.com
+DOMAIN,oauth2.googleapis.com
+DOMAIN,ssl.gstatic.com
+DOMAIN,www.gstatic.com
+
+# ===== YouTube =====
+# @sources: youtube
+# 页面、视频与图片/API 统一使用代理。
+DOMAIN-SUFFIX,ggpht.com
+DOMAIN-SUFFIX,googlevideo.com
+DOMAIN-SUFFIX,youtu.be
+DOMAIN-SUFFIX,youtube-nocookie.com
+DOMAIN-SUFFIX,youtube.com
+DOMAIN-SUFFIX,youtube.googleapis.com
+DOMAIN-SUFFIX,youtubeembeddedplayer.googleapis.com
+DOMAIN-SUFFIX,youtubei.googleapis.com
+DOMAIN-SUFFIX,ytimg.com
+
+# ===== Telegram =====
+# @sources: telegram
+# 覆盖域名连接；原生客户端直接 IP 的连接仍可能需要单独规则。
+DOMAIN-SUFFIX,cdn-telegram.org
+DOMAIN-SUFFIX,t.me
+DOMAIN-SUFFIX,tdesktop.com
+DOMAIN-SUFFIX,telegra.ph
+DOMAIN-SUFFIX,telegram-cdn.org
+DOMAIN-SUFFIX,telegram.me
+DOMAIN-SUFFIX,telegram.org
+DOMAIN-SUFFIX,telesco.pe
+
+# ===== Signal =====
+# @sources: signal
+# @sync: delta
+# 核心通讯域名；语音 UDP 还依赖代理能力。
+DOMAIN-SUFFIX,signal.group
+DOMAIN-SUFFIX,signal.link
+DOMAIN-SUFFIX,signal.me
+DOMAIN-SUFFIX,signal.org
+DOMAIN-SUFFIX,signalusers.org
+DOMAIN-SUFFIX,whispersystems.org
+
+# ===== Discord =====
+# @sources: discord
+# 聊天、附件与活动端点；不包含整个 Google 云存储。
+DOMAIN-SUFFIX,discord-activities.com
+DOMAIN-SUFFIX,discord.com
+DOMAIN-SUFFIX,discord.gg
+DOMAIN-SUFFIX,discord.media
+DOMAIN-SUFFIX,discordactivities.com
+DOMAIN-SUFFIX,discordapp.com
+DOMAIN-SUFFIX,discordapp.net
+DOMAIN-SUFFIX,discordcdn.com
+DOMAIN,discord-attachments-uploads-prd.storage.googleapis.com
+
+# ===== X / Twitter =====
+# @sources: twitter
+# 核心网页、短链与图片资源。
+DOMAIN-SUFFIX,t.co
+DOMAIN-SUFFIX,twimg.com
+DOMAIN-SUFFIX,twitpic.com
+DOMAIN-SUFFIX,twitter.com
+DOMAIN-SUFFIX,twitteroauth.com
+DOMAIN-SUFFIX,x.com
+
+# ===== Facebook 与 Messenger =====
+# @sources: facebook messenger
+# 排除大量品牌保护/拼写变体，保留通讯和资源域。
+DOMAIN-SUFFIX,facebook.com
+DOMAIN-SUFFIX,facebook.net
+DOMAIN-SUFFIX,fb.com
+DOMAIN-SUFFIX,fb.me
+DOMAIN-SUFFIX,fb.watch
+DOMAIN-SUFFIX,fbcdn.net
+DOMAIN-SUFFIX,fbsbx.com
+DOMAIN-SUFFIX,m.me
+DOMAIN-SUFFIX,messenger.com
+DOMAIN,fbcdn-a.akamaihd.net
+
+# ===== Instagram =====
+# @sources: instagram
+# 主站和媒体资源，不复制拼写变体全集。
+DOMAIN-SUFFIX,cdninstagram.com
+DOMAIN-SUFFIX,ig.me
+DOMAIN-SUFFIX,igcdn.com
+DOMAIN-SUFFIX,instagram.com
+
+# ===== WhatsApp =====
+# @sources: whatsapp
+# 核心通讯和短链。
+DOMAIN-SUFFIX,wa.me
+DOMAIN-SUFFIX,whatsapp.com
+DOMAIN-SUFFIX,whatsapp.net
+
+# ===== ChatGPT、OpenAI API 与 Sora =====
+# @sources: openai
+# 服务及专用资源；不加入通用 livekit.cloud、Azure 或第三方认证根域。
+DOMAIN-SUFFIX,chat.com
+DOMAIN-SUFFIX,chatgpt.com
+DOMAIN-SUFFIX,chatgpt.livekit.cloud
+DOMAIN-SUFFIX,oaistatic.com
+DOMAIN-SUFFIX,oaistatsig.com
+DOMAIN-SUFFIX,oaiusercontent.com
+DOMAIN-SUFFIX,openai.com
+DOMAIN-SUFFIX,sora.com
+DOMAIN,openaiapi-site.azureedge.net
+DOMAIN,openaiassets.blob.core.windows.net
+
+# ===== Claude =====
+# @sources: anthropic
+# @sync: delta
+# Claude 网页、API、内容和专用 CDN。
+DOMAIN-SUFFIX,anthropic.com
+DOMAIN-SUFFIX,clau.de
+DOMAIN-SUFFIX,claude.ai
+DOMAIN-SUFFIX,claude.com
+DOMAIN-SUFFIX,claudemcpclient.com
+DOMAIN-SUFFIX,claudemcpcontent.com
+DOMAIN-SUFFIX,claudeusercontent.com
+DOMAIN,servd-anthropic-website.b-cdn.net
+
+# ===== Gemini、AI Studio 与 NotebookLM =====
+# @sources: google-deepmind
+# AI 产品范围，不导入全部 Google 或 Google Cloud。
+DOMAIN-SUFFIX,aistudio.google.com
+DOMAIN-SUFFIX,gemini.google
+DOMAIN-SUFFIX,gemini.google.com
+DOMAIN-SUFFIX,generativelanguage.googleapis.com
+DOMAIN-SUFFIX,makersuite.google.com
+DOMAIN-SUFFIX,notebooklm.google
+DOMAIN-SUFFIX,notebooklm.google.com
+DOMAIN,ai.google.dev
+DOMAIN,gemini.gstatic.com
+DOMAIN,notebooklm-pa.googleapis.com
+DOMAIN,notebooklm.googleapis.com
+
+# ===== Perplexity =====
+# @sources: perplexity
+# @sync: delta
+# 搜索与专用附件资源。
+DOMAIN-SUFFIX,perplexity.ai
+DOMAIN-SUFFIX,perplexity.com
+DOMAIN-SUFFIX,pplx.ai
+DOMAIN,ppl-ai-file-upload.s3.amazonaws.com
+DOMAIN,pplx-res.cloudinary.com
+
+# ===== GitHub 与代码资源 =====
+# @sources: github
+# 仓库、API、Release、容器资源；不全量包含 npm 或 GitHub Pages 用户站点。
+DOMAIN-SUFFIX,gh.io
+DOMAIN-SUFFIX,ghcr.io
+DOMAIN-SUFFIX,git.io
+DOMAIN-SUFFIX,github.com
+DOMAIN-SUFFIX,github.dev
+DOMAIN-SUFFIX,githubapp.com
+DOMAIN-SUFFIX,githubassets.com
+DOMAIN-SUFFIX,githubusercontent.com
+DOMAIN,github-api.arkoselabs.com
+DOMAIN,github-cloud.s3.amazonaws.com
+DOMAIN,github-production-release-asset-2e65be.s3.amazonaws.com
+DOMAIN,github-production-repository-file-5c1aeb.s3.amazonaws.com
+
+# ===== GitHub Copilot =====
+# @sources: github-copilot
+# Copilot 功能端点，与 Microsoft Copilot 是不同服务。
+DOMAIN-SUFFIX,githubcopilot.com
+DOMAIN,copilot-workspace.githubnext.com
+DOMAIN,copilotprodattachments.blob.core.windows.net
+
+# ===== Reddit =====
+# @sources: reddit
+# 社区页面与媒体资源。
+DOMAIN-SUFFIX,redd.it
+DOMAIN-SUFFIX,reddit.com
+DOMAIN-SUFFIX,redditmedia.com
+DOMAIN-SUFFIX,redditspace.com
+DOMAIN-SUFFIX,redditstatic.com
+
+# ===== Netflix =====
+# @sources: netflix
+# 使用用户选择的代理出口；不保证节点支持播放或指定地区内容。
+DOMAIN-SUFFIX,netflix.com
+DOMAIN-SUFFIX,netflix.net
+DOMAIN-SUFFIX,nflxext.com
+DOMAIN-SUFFIX,nflximg.com
+DOMAIN-SUFFIX,nflximg.net
+DOMAIN-SUFFIX,nflxsearch.net
+DOMAIN-SUFFIX,nflxso.net
+DOMAIN-SUFFIX,nflxvideo.net
+DOMAIN,netflix.com.edgesuite.net
+
+# ===== Disney+ =====
+# @sources: disney bamtech
+# Disney+ 及播放/认证资源，不包含迪士尼乐园和集团全部服务。
+DOMAIN-SUFFIX,bamgrid.com
+DOMAIN-SUFFIX,disney-plus.net
+DOMAIN-SUFFIX,disneyaccount.com
+DOMAIN-SUFFIX,disneyplus.com
+DOMAIN-SUFFIX,disneystreaming.com
+DOMAIN-SUFFIX,dssott.com
+DOMAIN-SUFFIX,streamingdisney.net
+
+# ===== Spotify =====
+# @sources: spotify
+# 网页、音频及专用 CDN；出口由用户选择。
+DOMAIN-SUFFIX,pscdn.co
+DOMAIN-SUFFIX,scdn.co
+DOMAIN-SUFFIX,spoti.fi
+DOMAIN-SUFFIX,spotify.com
+DOMAIN-SUFFIX,spotify.link
+DOMAIN-SUFFIX,spotifycdn.com
+DOMAIN-SUFFIX,spotifycdn.net
+DOMAIN,audio-ak-spotify-com.akamaized.net
+DOMAIN,audio4-ak-spotify-com.akamaized.net
+
+# ===== Twitch =====
+# @sources: twitch
+# 直播主站与服务资源，不包括整个 CloudFront。
+DOMAIN-SUFFIX,jtvnw.net
+DOMAIN-SUFFIX,ttvnw.net
+DOMAIN-SUFFIX,twitch.tv
+DOMAIN-SUFFIX,twitchcdn.net
+DOMAIN-SUFFIX,twitchsvc.net
+
+# ===== Steam 社区 =====
+# @sources: steam
+# 社区与聊天使用代理；商店、下载和游戏 UDP 不一并强制代理。
+DOMAIN-SUFFIX,steam-chat.com
+DOMAIN-SUFFIX,steamcommunity.com
+DOMAIN,steamcommunity-a.akamaihd.net
+DOMAIN,steamcommunity-a.akamaihd.net.edgesuite.net

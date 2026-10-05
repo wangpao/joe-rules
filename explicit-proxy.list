@@ -1,5 +1,5 @@
 # Joe Explicit Proxy | PROXY
-# Upstream: v2fly/domain-list-community @ 9ff2d61d76ce28edb513920a2727f222793041c0
+# Upstream: v2fly/domain-list-community @ 63777333b7dd1ac57f790e466c0f6a647b9c7281
 # License: MIT; see LICENSE. Edit this file directly; there is no JSON source.
 # DOMAIN = exact host; DOMAIN-SUFFIX = apex and dot-separated subdomains.
 
@@ -153,6 +153,7 @@ DOMAIN-SUFFIX,anthropic.com
 DOMAIN-SUFFIX,clau.de
 DOMAIN-SUFFIX,claude.ai
 DOMAIN-SUFFIX,claude.com
+DOMAIN-SUFFIX,claude.dev
 DOMAIN-SUFFIX,claudemcpclient.com
 DOMAIN-SUFFIX,claudemcpcontent.com
 DOMAIN-SUFFIX,claudeusercontent.com

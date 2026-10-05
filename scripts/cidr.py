@@ -108,9 +108,13 @@ def main():
         if before and f'# Release: {args.release}\n' in before:
             check(before); print('Current monthly release already present.'); return
         url = f'https://download.db-ip.com/free/dbip-country-lite-{args.release}.csv.gz'
+        # Identify this downloader explicitly; DB-IP rejects urllib's default User-Agent.
+        request = urllib.request.Request(url, headers={
+            'User-Agent': 'joe-rules/1.0 (+https://github.com/wangpao/joe-rules)',
+        })
         with tempfile.TemporaryDirectory() as tmp:
             source = Path(tmp) / 'source.csv.gz'
-            with urllib.request.urlopen(url, timeout=120) as response, source.open('wb') as out:
+            with urllib.request.urlopen(request, timeout=120) as response, source.open('wb') as out:
                 import shutil
                 shutil.copyfileobj(response, out)
             result = build(source, args.release)

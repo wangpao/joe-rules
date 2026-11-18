@@ -1,40 +1,45 @@
 # Joe Rules
 
-四类 Joe 路由规则：三个按服务分组的域名集，以及一份中国 IP 网段兜底集。**直接维护 `.list`，没有 JSON 配置、生成版 JSON 或重复服务目录。**
+四类核心 Joe 路由规则（三个按服务分组的核心域名集 + 一份中国 IP 网段兜底集），外加五个从 `explicit-proxy.list` 单独拆出的单服务代理集（便于按服务分流与独立更新）。**直接维护 `.list`，没有 JSON 配置、生成版 JSON 或重复服务目录。**
+
+（下表与“原始下载地址”均按推荐规则匹配顺序自上而下排列：）
 
 | 文件 | 用途 | 原始首版 |
 | --- | --- | --- |
-| [cn-services.list](cn-services.list) | 中国常见服务直连 | 70 个服务入口，323 条 |
+| [youtube.list](youtube.list) | YouTube 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，9 条 |
+| [x.list](x.list) | X / Twitter 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，6 条 |
+| [chatgpt.list](chatgpt.list) | ChatGPT / OpenAI / Sora 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，10 条 |
+| [claude.list](claude.list) | Claude 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，21 条 |
+| [gemini.list](gemini.list) | Gemini / AI Studio / NotebookLM 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，11 条 |
 | [global-direct.list](global-direct.list) | 国外服务直连例外：Apple、Microsoft、Steam 的具体功能 | 7 个功能组，47 条 |
-| [cn-cidr.list](cn-cidr.list) | 中国 IPv4 / IPv6 直连兜底 | 8,348 条 IPv4，7,009 条 IPv6 |
 | [explicit-proxy.list](explicit-proxy.list) | 常用服务明确代理 | 24 个服务组，163 条 |
-| [youtube.list](youtube.list) | YouTube 单独代理规则（同步保留于 `explicit-proxy.list`） | 1 个服务组，9 条 |
-| [x.list](x.list) | X / Twitter 单独代理规则（同步保留于 `explicit-proxy.list`） | 1 个服务组，6 条 |
-| [chatgpt.list](chatgpt.list) | ChatGPT / OpenAI / Sora 单独代理规则（同步保留于 `explicit-proxy.list`） | 1 个服务组，10 条 |
-| [claude.list](claude.list) | Claude 单独代理规则（同步保留于 `explicit-proxy.list`） | 1 个服务组，21 条 |
-| [gemini.list](gemini.list) | Gemini / AI Studio / NotebookLM 单独代理规则（同步保留于 `explicit-proxy.list`） | 1 个服务组，11 条 |
+| [cn-services.list](cn-services.list) | 中国常见服务直连 | 70 个服务入口，323 条 |
+| [cn-cidr.list](cn-cidr.list) | 中国 IPv4 / IPv6 直连兜底 | 8,348 条 IPv4，7,009 条 IPv6 |
 
 三个核心域名集与五个单服务代理集的原始数据均来自 [V2Fly domain-list-community](https://github.com/v2fly/domain-list-community)，MIT 许可。每份文件头记录其上游版本；服务组中的 `@sources` 注释记录来源文件。没有复制 Blackmatrix7 的规则数据，也没有整类导入 geosite:cn 或大型集团全集。需随分发保留 [LICENSE](LICENSE) 中的上游版权和许可声明。
 
 ## 使用
 
-原始下载地址：
+原始下载地址（按推荐匹配顺序排列）：
 
-- https://raw.githubusercontent.com/wangpao/joe-rules/main/cn-services.list
-- https://raw.githubusercontent.com/wangpao/joe-rules/main/global-direct.list
-- https://raw.githubusercontent.com/wangpao/joe-rules/main/explicit-proxy.list
-- https://raw.githubusercontent.com/wangpao/joe-rules/main/cn-cidr.list
 - https://raw.githubusercontent.com/wangpao/joe-rules/main/youtube.list
 - https://raw.githubusercontent.com/wangpao/joe-rules/main/x.list
 - https://raw.githubusercontent.com/wangpao/joe-rules/main/chatgpt.list
 - https://raw.githubusercontent.com/wangpao/joe-rules/main/claude.list
 - https://raw.githubusercontent.com/wangpao/joe-rules/main/gemini.list
+- https://raw.githubusercontent.com/wangpao/joe-rules/main/global-direct.list
+- https://raw.githubusercontent.com/wangpao/joe-rules/main/explicit-proxy.list
+- https://raw.githubusercontent.com/wangpao/joe-rules/main/cn-services.list
+- https://raw.githubusercontent.com/wangpao/joe-rules/main/cn-cidr.list
 
-建议先执行用户覆盖、本地网络和可选拦截规则，然后依次：Global Direct → Explicit Proxy → CN Services → CN CIDR → 默认代理。三个核心域名名单要求无交叉重叠；五个单服务代理集保留与 `explicit-proxy.list` 的对应内容并允许与其重叠（但仍禁止与直连名单冲突），便于单独订阅或分流；域名与 CIDR 的重叠按域名优先处理。
+建议先执行用户覆盖、本地网络和可选拦截规则，然后依次：（可选单服务分流：`youtube.list` / `x.list` / `chatgpt.list` / `claude.list` / `gemini.list`） → `Global Direct` → `Explicit Proxy` → `CN Services` → `CN CIDR` → 默认代理。
+
+- **为什么单服务代理集放在最上方（`Explicit Proxy` 之前）**：五个单服务代理集的内容同时保留在 `explicit-proxy.list` 中；客户端按“自上而下首次命中”匹配规则时，必须将需要单独指定节点/策略组的单服务文件放在 `explicit-proxy.list` 之上，分流策略才会生效（未单独订阅时可省略，直接由 `explicit-proxy.list` 统一兜底代理）。且这五个文件已校验与 `global-direct.list`、`cn-services.list` 无任何重叠，置顶不会误伤直连规则。
+- **核心顺序原理**：`Global Direct` 优先放行国外直连功能（如系统更新与 CDN）；`Explicit Proxy` 在 `CN Services` 与 IP 兜底之前锁定明确代理域名；`CN Services` 在 `CN CIDR` 之前通过域名直连国内常见服务；`CN CIDR` 在所有域名规则之后作为中国 IP 兜底；未命中的其余流量走默认代理。域名与 CIDR 重叠时按域名优先处理。
 
 `DOMAIN` 只匹配完整主机；`DOMAIN-SUFFIX` 匹配自身及点分隔的子域。`#` 行是注释，消费者应忽略。List 不带策略字段，加载时绑定 DIRECT 或用户选定的 PROXY。Joe 如需 JSON 或二进制，应在客户端构建中自行转换。
 
-本仓库包含讨论中的四类规则；代理节点、DNS 配置、局域网策略和在线签名机制由客户端另行实现。普通连接、直接 IP 连接和语音 UDP 是否可用仍取决于客户端实现与网络；这些规则没有经过多运营商真机验证。
+本仓库包含上述四类核心规则及五个单服务独立代理列表；代理节点、DNS 配置、局域网策略和在线签名机制由客户端另行实现。普通连接、直接 IP 连接和语音 UDP 是否可用仍取决于客户端实现与网络；这些规则没有经过多运营商真机验证。
 
 ## CN CIDR 数据
 
@@ -50,18 +55,18 @@
 
 每周一北京时间 **06:23** 检查上游；也可在 Actions → Update rules → Run workflow 手动运行。GitHub 排程可能延迟。
 
-八个域名更新任务独立运行、独立建立更新 PR，分支分别为 `automation/update-cn-services`、`automation/update-global-direct`、`automation/update-explicit-proxy`、`automation/update-youtube`、`automation/update-x`、`automation/update-chatgpt`、`automation/update-claude`、`automation/update-gemini`。没有规则变化就不提交、不创建空 PR；不会自动合并到 main。PR 合并后，原始下载链接自然提供新版本。
+八个域名更新任务独立运行、独立建立更新 PR，分支分别为 `automation/update-youtube`、`automation/update-x`、`automation/update-chatgpt`、`automation/update-claude`、`automation/update-gemini`、`automation/update-global-direct`、`automation/update-explicit-proxy`、`automation/update-cn-services`。没有规则变化就不提交、不创建空 PR；不会自动合并到 main。PR 合并后，原始下载链接自然提供新版本。
 
 自动化不需要个人 token，使用本仓库的临时 `GITHUB_TOKEN`。仓库 Actions 设置需要允许 GitHub Actions 创建 PR。只有更新任务有 contents/pull-requests 写权限；普通检查为只读。Action 依赖固定到完整 commit，远程上游仅作为数据读取，不执行其脚本。
 
-由 `GITHUB_TOKEN` 创建的 PR 不一定触发另一轮 PR 工作流，因此更新任务在创建 PR 前已对三个名单运行检查与回归测试。若多个更新 PR 先后合并，合并前仍应确认当前分支检查结果；跨名单冲突会使检查失败。
+由 `GITHUB_TOKEN` 创建的 PR 不一定触发另一轮 PR 工作流，因此更新任务在创建 PR 前已对全部规则名单运行检查与回归测试。若多个更新 PR 先后合并，合并前仍应确认当前分支检查结果；与直连名单冲突或核心名单间的跨名单冲突会使检查失败。
 
 公开仓库若长期无活动，GitHub 可能在 60 天后停用定时工作流，需要重新启用。失败可在 Actions 查看，是否发送通知取决于你的 GitHub 通知设置。
 
 ### 更新范围
 
 - **默认 maintain**：保持人工选择的范围，检查每条规则在新版上游是否仍受支持；来源删除或出现相反国家属性时提出移除。不因为集团名单新增产品，就自动扩大路由范围。
-- **`# @sync: delta`**：仅对少量较专一的服务启用。同步基线之后新增的合规域名，不把历史上已经排除的域名一次性加入。当前用于拼多多、知乎、喜马拉雅、Keep、虎牙、Signal、Claude、Perplexity 等窄范围来源。
+- **`# @sync: delta`**：同步基线之后新增的合规域名，不把历史上已经排除的域名一次性加入。当前用于主集合中的拼多多、知乎、喜马拉雅、Keep、虎牙、Signal、Claude、Perplexity 等窄范围来源，以及五个独立的单服务代理集（`youtube.list`、`x.list`、`chatgpt.list`、`claude.list`、`gemini.list`）。
 - 新增上游规则可能仍有误分类；**更新 PR 就是审阅这些变化的地方**。新增更宽的父域、共享 CDN 根域、关键词、正则、相反国家属性会被跳过或阻止。
 - 超过 10%（最低阈值 5 条）的删除、整个服务组变空、缺失来源、解析错误、跨名单冲突会使任务失败，不发布半成品。
 - 未变化时保留原基线版本，避免只有版本号变化的维护噪声。
@@ -107,4 +112,4 @@ python3 scripts/test_rules.py
 
 [Apple 网络端点说明](https://support.apple.com/en-us/101555) 与 [Microsoft 更新端点说明](https://learn.microsoft.com/en-us/troubleshoot/windows-client/installing-updates-features-roles/windows-update-issues-troubleshooting) 用于核对功能边界；实际域名从 MIT 上游派生。官方文章正文未复制进仓库。
 
-修改：按服务筛选、收窄部分域名为具体子域或精确主机、去重、分组、添加 Joe 路由策略和自动检查。上游不代表为 Joe 的策略或连接效果背书。仓库工具与三个衍生域名集按 MIT 提供（CN CIDR 数据按 CC BY 4.0 提供），上游版权声明保留在 LICENSE。
+修改：按服务筛选、收窄部分域名为具体子域或精确主机、去重、分组、添加 Joe 路由策略和自动检查。上游不代表为 Joe 的策略或连接效果背书。仓库工具与衍生域名集按 MIT 提供（CN CIDR 数据按 CC BY 4.0 提供），上游版权声明保留在 LICENSE。

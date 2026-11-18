@@ -48,7 +48,7 @@ class RoutingTests(unittest.TestCase):
             self.assertEqual(len(doc.groups),1)
             group=doc.groups[0]
             self.assertEqual(group.name,group_name)
-            self.assertEqual(group.mode,'delta')
+            self.assertEqual(group.mode,'full')
             self.assertEqual(group.sources,explicit_groups[group_name].sources)
             self.assertTrue(group.rules)
 
@@ -81,5 +81,17 @@ class RoutingTests(unittest.TestCase):
         doc.groups[0].rules=[('domain','example.com')]
         r.update(doc,old,new,'b'*40,'DIRECT')
         self.assertEqual(r.all_rules(doc),[])
+
+    def test_full_mode_backfills_upgrades_and_skips_reserved(self):
+        old=r.Source({'x':'example.com\nfull:example.com\nunblocked.com @cn\nreserved.com'})
+        new=r.Source({'x':'example.com\nfull:sub.example.com\nunblocked.com\nreserved.com\nads.net @ads\ngoogleapis.com'})
+        doc=r.ListFile([], 'a'*40,[r.Group('x',rules=[('full','example.com')],sources=['x'],mode='full')])
+        changes,_=r.update(doc,old,new,'b'*40,'PROXY',reserved=[('domain','reserved.com')])
+        self.assertEqual(set(r.all_rules(doc)),{('domain','example.com'),('domain','unblocked.com')})
+        self.assertEqual(doc.revision,'b'*40)
+        self.assertTrue(any('Remove x: `DOMAIN,example.com`' in c for c in changes))
+        again=copy.deepcopy(doc)
+        changes,_=r.update(again,old,new,'b'*40,'PROXY',reserved=[('domain','reserved.com')])
+        self.assertEqual(changes,[])
 
 if __name__=='__main__': unittest.main()

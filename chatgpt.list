@@ -1,19 +1,29 @@
 # Joe ChatGPT / OpenAI | PROXY
-# Upstream: v2fly/domain-list-community @ 93d681debd7abdf1c08c3b3891ca1d7da657ea23
+# Upstream: v2fly/domain-list-community @ 9d4869e1fc713e48b6e6764e8cd271fda17a7198
 # License: MIT; see LICENSE. Edit this file directly; there is no JSON source.
 # DOMAIN = exact host; DOMAIN-SUFFIX = apex and dot-separated subdomains.
 
 # ===== ChatGPT、OpenAI API 与 Sora =====
 # @sources: openai
-# @sync: delta
+# @sync: full
 # 服务及专用资源；不加入通用 livekit.cloud、Azure 或第三方认证根域。
 DOMAIN-SUFFIX,chat.com
 DOMAIN-SUFFIX,chatgpt.com
 DOMAIN-SUFFIX,chatgpt.livekit.cloud
+DOMAIN-SUFFIX,chatgpt.site
+DOMAIN-SUFFIX,crixet.com
+DOMAIN-SUFFIX,host.livekit.cloud
 DOMAIN-SUFFIX,oaistatic.com
 DOMAIN-SUFFIX,oaistatsig.com
 DOMAIN-SUFFIX,oaiusercontent.com
 DOMAIN-SUFFIX,openai.com
+DOMAIN-SUFFIX,openai.com.cdn.cloudflare.net
+DOMAIN-SUFFIX,openai.org
 DOMAIN-SUFFIX,sora.com
+DOMAIN-SUFFIX,turn.livekit.cloud
 DOMAIN,openaiapi-site.azureedge.net
 DOMAIN,openaiassets.blob.core.windows.net
+DOMAIN,openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net
+DOMAIN,openaicom.imgix.net
+DOMAIN,openaicomproductionae4b.blob.core.windows.net
+DOMAIN,production-openaicom-storage.azureedge.net

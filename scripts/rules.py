@@ -89,7 +89,7 @@ def parse(text):
     if len({g.name for g in groups}) != len(groups): raise ValueError('Duplicate group name')
     for g in groups:
         if not g.sources or any(not re.fullmatch('[a-z0-9!-]+',s) for s in g.sources): raise ValueError('Invalid source list')
-        if g.mode not in ('maintain','delta'): raise ValueError('Unknown synchronization mode')
+        if g.mode not in ('maintain','delta','full'): raise ValueError('Unknown synchronization mode')
     return ListFile(header,revision,groups)
 
 def render(doc):
@@ -185,10 +185,29 @@ def forbidden(rule,g,source,action):
     return any(overlap(rule,r) for r in source.tags[tag])
 
 
-def update(doc,old,new,revision,action):
+def update(doc,old,new,revision,action,reserved=()):
     changes=[]; skipped=[]
     for g in doc.groups:
-        current=new.group(g); previous=old.group(g); kept=[]
+        current=new.group(g); previous=old.group(g)
+        if g.mode=='full':
+            blocked=list(reserved)+[r for og in doc.groups if og is not g for r in og.rules]
+            candidates=[]
+            for kind,domain,attrs in sorted(current):
+                if kind not in ('full','domain') or 'ads' in attrs: continue
+                rule=(kind,domain)
+                if not valid(rule) or forbidden(rule,g,new,action) or any(overlap(rule,b) for b in blocked):
+                    skipped.append(f'{g.name}: {kind}:{domain}'); continue
+                candidates.append(rule)
+            candidates=sorted(set(candidates))
+            desired=[r for r in candidates if not any(c!=r and covers(c,r) for c in candidates)]
+            old_set=set(g.rules); new_set=set(desired)
+            for rule in sorted(old_set-new_set):
+                changes.append(f'- Remove {g.name}: `{encode(rule)}` (source removed, superseded, or contrary attribute)')
+            for rule in sorted(new_set-old_set):
+                changes.append(f'- Add {g.name}: `{encode(rule)}`')
+            g.rules=desired
+            continue
+        kept=[]
         for rule in g.rules:
             if supported(rule,current) and not forbidden(rule,g,new,action): kept.append(rule)
             else: changes.append(f'- Remove {g.name}: `{encode(rule)}` (source removed or contrary attribute)')
@@ -199,7 +218,7 @@ def update(doc,old,new,revision,action):
             for kind,domain,attrs in sorted(current):
                 rule=(kind,domain)
                 if rule in before or kind not in ('full','domain') or 'ads' in attrs: continue
-                if not valid(rule) or forbidden(rule,g,new,action):
+                if not valid(rule) or forbidden(rule,g,new,action) or any(overlap(rule,b) for b in reserved):
                     skipped.append(f'{g.name}: {kind}:{domain}'); continue
                 if any(covers(r,rule) for r in all_rules(doc)): continue
                 if any(covers(rule,r) for r in all_rules(doc)):
@@ -229,7 +248,9 @@ def main():
         for r in g.rules:
             if not supported(r,old.group(g)): raise ValueError(f'Baseline source does not support {g.name}: {r}')
     action='DIRECT' if args.target in DIRECT_FILES else 'PROXY'
-    changes,skipped=update(doc,old,new,revision,action)
+    reserved_files=DIRECT_FILES if args.target in SERVICE_PROXY_FILES else [f for f in CORE_FILES if f!=args.target]
+    reserved=[r for f in reserved_files for r in all_rules(docs[f])]
+    changes,skipped=update(doc,old,new,revision,action,reserved)
     check(docs)
     before=parse((args.root/args.target).read_text())
     removed=set(all_rules(before))-set(all_rules(doc))

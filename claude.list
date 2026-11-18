@@ -5,7 +5,7 @@
 
 # ===== Claude =====
 # @sources: anthropic
-# @sync: delta
+# @sync: full
 # Claude 网页、API、内容和专用 CDN。
 DOMAIN-SUFFIX,ant.dev
 DOMAIN-SUFFIX,anthropic.com

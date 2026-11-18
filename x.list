@@ -1,15 +1,32 @@
 # Joe X / Twitter | PROXY
-# Upstream: v2fly/domain-list-community @ 93d681debd7abdf1c08c3b3891ca1d7da657ea23
+# Upstream: v2fly/domain-list-community @ 9d4869e1fc713e48b6e6764e8cd271fda17a7198
 # License: MIT; see LICENSE. Edit this file directly; there is no JSON source.
 # DOMAIN = exact host; DOMAIN-SUFFIX = apex and dot-separated subdomains.
 
 # ===== X / Twitter =====
 # @sources: twitter
-# @sync: delta
+# @sync: full
 # 核心网页、短链与图片资源。
+DOMAIN-SUFFIX,cms-twdigitalassets.com
+DOMAIN-SUFFIX,periscope.tv
+DOMAIN-SUFFIX,pscp.tv
 DOMAIN-SUFFIX,t.co
+DOMAIN-SUFFIX,tellapart.com
+DOMAIN-SUFFIX,tweetdeck.com
 DOMAIN-SUFFIX,twimg.com
 DOMAIN-SUFFIX,twitpic.com
+DOMAIN-SUFFIX,twitter.biz
 DOMAIN-SUFFIX,twitter.com
+DOMAIN-SUFFIX,twitter.jp
+DOMAIN-SUFFIX,twitter.map.fastly.net
+DOMAIN-SUFFIX,twittercommunity.com
+DOMAIN-SUFFIX,twitterflightschool.com
+DOMAIN-SUFFIX,twitterinc.com
 DOMAIN-SUFFIX,twitteroauth.com
+DOMAIN-SUFFIX,twitterstat.us
+DOMAIN-SUFFIX,twtrdns.net
+DOMAIN-SUFFIX,twttr.com
+DOMAIN-SUFFIX,twttr.net
+DOMAIN-SUFFIX,twvid.com
+DOMAIN-SUFFIX,vine.co
 DOMAIN-SUFFIX,x.com

@@ -6,11 +6,11 @@
 
 | 文件 | 用途 | 原始首版 |
 | --- | --- | --- |
-| [youtube.list](youtube.list) | YouTube 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，9 条 |
-| [x.list](x.list) | X / Twitter 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，6 条 |
-| [chatgpt.list](chatgpt.list) | ChatGPT / OpenAI / Sora 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，10 条 |
+| [youtube.list](youtube.list) | YouTube 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，174 条 |
+| [x.list](x.list) | X / Twitter 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，23 条 |
+| [chatgpt.list](chatgpt.list) | ChatGPT / OpenAI / Sora 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，20 条 |
 | [claude.list](claude.list) | Claude 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，21 条 |
-| [gemini.list](gemini.list) | Gemini / AI Studio / NotebookLM 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，11 条 |
+| [gemini.list](gemini.list) | Gemini / AI Studio / NotebookLM 单独代理规则（同步保留于 `explicit-proxy.list`，按需置顶分流） | 1 个服务组，49 条 |
 | [global-direct.list](global-direct.list) | 国外服务直连例外：Apple、Microsoft、Steam 的具体功能 | 7 个功能组，47 条 |
 | [explicit-proxy.list](explicit-proxy.list) | 常用服务明确代理 | 24 个服务组，163 条 |
 | [cn-services.list](cn-services.list) | 中国常见服务直连 | 70 个服务入口，323 条 |
@@ -66,7 +66,8 @@
 ### 更新范围
 
 - **默认 maintain**：保持人工选择的范围，检查每条规则在新版上游是否仍受支持；来源删除或出现相反国家属性时提出移除。不因为集团名单新增产品，就自动扩大路由范围。
-- **`# @sync: delta`**：同步基线之后新增的合规域名，不把历史上已经排除的域名一次性加入。当前用于主集合中的拼多多、知乎、喜马拉雅、Keep、虎牙、Signal、Claude、Perplexity 等窄范围来源，以及五个独立的单服务代理集（`youtube.list`、`x.list`、`chatgpt.list`、`claude.list`、`gemini.list`）。
+- **`# @sync: delta`**：同步基线之后新增的合规域名，不把历史上已经排除的域名一次性加入。当前用于主集合中的拼多多、知乎、喜马拉雅、Keep、虎牙、Signal、Perplexity 等窄范围来源。
+- **`# @sync: full`**：完整镜像所属 `@sources` 中全部合规的 `DOMAIN` / `DOMAIN-SUFFIX` 规则（自动过滤 `@ads`、相反国家属性、宽泛根域、直连冲突与被更宽规则覆盖的冗余子域），即使上游补录历史项或放开属性也会自动补齐。当前用于五个独立的单服务代理集（`youtube.list`、`x.list`、`chatgpt.list`、`claude.list`、`gemini.list`）以及 `explicit-proxy.list` 中对应的五个分组。
 - 新增上游规则可能仍有误分类；**更新 PR 就是审阅这些变化的地方**。新增更宽的父域、共享 CDN 根域、关键词、正则、相反国家属性会被跳过或阻止。
 - 超过 10%（最低阈值 5 条）的删除、整个服务组变空、缺失来源、解析错误、跨名单冲突会使任务失败，不发布半成品。
 - 未变化时保留原基线版本，避免只有版本号变化的维护噪声。

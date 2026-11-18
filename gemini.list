@@ -1,0 +1,20 @@
+# Joe Gemini / AI Studio / NotebookLM | PROXY
+# Upstream: v2fly/domain-list-community @ 93d681debd7abdf1c08c3b3891ca1d7da657ea23
+# License: MIT; see LICENSE. Edit this file directly; there is no JSON source.
+# DOMAIN = exact host; DOMAIN-SUFFIX = apex and dot-separated subdomains.
+
+# ===== Gemini、AI Studio 与 NotebookLM =====
+# @sources: google-deepmind
+# @sync: delta
+# AI 产品范围，不导入全部 Google 或 Google Cloud。
+DOMAIN-SUFFIX,aistudio.google.com
+DOMAIN-SUFFIX,gemini.google
+DOMAIN-SUFFIX,gemini.google.com
+DOMAIN-SUFFIX,generativelanguage.googleapis.com
+DOMAIN-SUFFIX,makersuite.google.com
+DOMAIN-SUFFIX,notebooklm.google
+DOMAIN-SUFFIX,notebooklm.google.com
+DOMAIN,ai.google.dev
+DOMAIN,gemini.gstatic.com
+DOMAIN,notebooklm-pa.googleapis.com
+DOMAIN,notebooklm.googleapis.com

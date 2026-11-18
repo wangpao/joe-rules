@@ -1,0 +1,18 @@
+# Joe YouTube | PROXY
+# Upstream: v2fly/domain-list-community @ 93d681debd7abdf1c08c3b3891ca1d7da657ea23
+# License: MIT; see LICENSE. Edit this file directly; there is no JSON source.
+# DOMAIN = exact host; DOMAIN-SUFFIX = apex and dot-separated subdomains.
+
+# ===== YouTube =====
+# @sources: youtube
+# @sync: delta
+# 页面、视频与图片/API 统一使用代理。
+DOMAIN-SUFFIX,ggpht.com
+DOMAIN-SUFFIX,googlevideo.com
+DOMAIN-SUFFIX,youtu.be
+DOMAIN-SUFFIX,youtube-nocookie.com
+DOMAIN-SUFFIX,youtube.com
+DOMAIN-SUFFIX,youtube.googleapis.com
+DOMAIN-SUFFIX,youtubeembeddedplayer.googleapis.com
+DOMAIN-SUFFIX,youtubei.googleapis.com
+DOMAIN-SUFFIX,ytimg.com

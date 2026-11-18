@@ -29,6 +29,28 @@ class RoutingTests(unittest.TestCase):
         a=r.ListFile([], 'a'*40,[r.Group('a',rules=[('domain','qq.com')])])
         c=r.ListFile([], 'a'*40,[r.Group('b',rules=[('full','wetv.qq.com')])])
         with self.assertRaises(ValueError): r.check({'a':a,'b':c})
+        with self.assertRaises(ValueError): r.check({'youtube.list':a,'cn-services.list':c})
+        r.check({'youtube.list':a,'explicit-proxy.list':c})
+
+    def test_service_proxy_lists(self):
+        docs={f:r.parse((r.ROOT/f).read_text()) for f in r.FILES}
+        explicit_groups={g.name:g for g in docs['explicit-proxy.list'].groups}
+        expected_groups={
+            'youtube.list':'YouTube',
+            'x.list':'X / Twitter',
+            'chatgpt.list':'ChatGPT、OpenAI API 与 Sora',
+            'claude.list':'Claude',
+            'gemini.list':'Gemini、AI Studio 与 NotebookLM',
+        }
+        self.assertEqual(set(r.SERVICE_PROXY_FILES),set(expected_groups))
+        for filename,group_name in expected_groups.items():
+            doc=docs[filename]
+            self.assertEqual(len(doc.groups),1)
+            group=doc.groups[0]
+            self.assertEqual(group.name,group_name)
+            self.assertEqual(group.mode,'delta')
+            self.assertEqual(group.sources,explicit_groups[group_name].sources)
+            self.assertTrue(group.rules)
 
     def test_upstream_filters_affiliation_and_cycles(self):
         source=r.Source({'a':'include:b @cn @-!cn','b':'include:c','c':'one.cn @cn &alias\ntwo.com @cn @!cn\nthree.com'})

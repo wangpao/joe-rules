@@ -1,0 +1,15 @@
+# Joe X / Twitter | PROXY
+# Upstream: v2fly/domain-list-community @ 93d681debd7abdf1c08c3b3891ca1d7da657ea23
+# License: MIT; see LICENSE. Edit this file directly; there is no JSON source.
+# DOMAIN = exact host; DOMAIN-SUFFIX = apex and dot-separated subdomains.
+
+# ===== X / Twitter =====
+# @sources: twitter
+# @sync: delta
+# 核心网页、短链与图片资源。
+DOMAIN-SUFFIX,t.co
+DOMAIN-SUFFIX,twimg.com
+DOMAIN-SUFFIX,twitpic.com
+DOMAIN-SUFFIX,twitter.com
+DOMAIN-SUFFIX,twitteroauth.com
+DOMAIN-SUFFIX,x.com

@@ -8,8 +8,13 @@
 | [global-direct.list](global-direct.list) | 国外服务直连例外：Apple、Microsoft、Steam 的具体功能 | 7 个功能组，47 条 |
 | [cn-cidr.list](cn-cidr.list) | 中国 IPv4 / IPv6 直连兜底 | 8,348 条 IPv4，7,009 条 IPv6 |
 | [explicit-proxy.list](explicit-proxy.list) | 常用服务明确代理 | 24 个服务组，163 条 |
+| [youtube.list](youtube.list) | YouTube 单独代理规则（同步保留于 `explicit-proxy.list`） | 1 个服务组，9 条 |
+| [x.list](x.list) | X / Twitter 单独代理规则（同步保留于 `explicit-proxy.list`） | 1 个服务组，6 条 |
+| [chatgpt.list](chatgpt.list) | ChatGPT / OpenAI / Sora 单独代理规则（同步保留于 `explicit-proxy.list`） | 1 个服务组，10 条 |
+| [claude.list](claude.list) | Claude 单独代理规则（同步保留于 `explicit-proxy.list`） | 1 个服务组，21 条 |
+| [gemini.list](gemini.list) | Gemini / AI Studio / NotebookLM 单独代理规则（同步保留于 `explicit-proxy.list`） | 1 个服务组，11 条 |
 
-三个域名集的原始数据来自 [V2Fly domain-list-community](https://github.com/v2fly/domain-list-community)，MIT 许可。每份文件头记录其上游版本；服务组中的 `@sources` 注释记录来源文件。没有复制 Blackmatrix7 的规则数据，也没有整类导入 geosite:cn 或大型集团全集。需随分发保留 [LICENSE](LICENSE) 中的上游版权和许可声明。
+三个核心域名集与五个单服务代理集的原始数据均来自 [V2Fly domain-list-community](https://github.com/v2fly/domain-list-community)，MIT 许可。每份文件头记录其上游版本；服务组中的 `@sources` 注释记录来源文件。没有复制 Blackmatrix7 的规则数据，也没有整类导入 geosite:cn 或大型集团全集。需随分发保留 [LICENSE](LICENSE) 中的上游版权和许可声明。
 
 ## 使用
 
@@ -19,8 +24,13 @@
 - https://raw.githubusercontent.com/wangpao/joe-rules/main/global-direct.list
 - https://raw.githubusercontent.com/wangpao/joe-rules/main/explicit-proxy.list
 - https://raw.githubusercontent.com/wangpao/joe-rules/main/cn-cidr.list
+- https://raw.githubusercontent.com/wangpao/joe-rules/main/youtube.list
+- https://raw.githubusercontent.com/wangpao/joe-rules/main/x.list
+- https://raw.githubusercontent.com/wangpao/joe-rules/main/chatgpt.list
+- https://raw.githubusercontent.com/wangpao/joe-rules/main/claude.list
+- https://raw.githubusercontent.com/wangpao/joe-rules/main/gemini.list
 
-建议先执行用户覆盖、本地网络和可选拦截规则，然后依次：Global Direct → Explicit Proxy → CN Services → CN CIDR → 默认代理。三个域名名单要求无交叉重叠；域名与 CIDR 的重叠按域名优先处理。
+建议先执行用户覆盖、本地网络和可选拦截规则，然后依次：Global Direct → Explicit Proxy → CN Services → CN CIDR → 默认代理。三个核心域名名单要求无交叉重叠；五个单服务代理集保留与 `explicit-proxy.list` 的对应内容并允许与其重叠（但仍禁止与直连名单冲突），便于单独订阅或分流；域名与 CIDR 的重叠按域名优先处理。
 
 `DOMAIN` 只匹配完整主机；`DOMAIN-SUFFIX` 匹配自身及点分隔的子域。`#` 行是注释，消费者应忽略。List 不带策略字段，加载时绑定 DIRECT 或用户选定的 PROXY。Joe 如需 JSON 或二进制，应在客户端构建中自行转换。
 
@@ -40,7 +50,7 @@
 
 每周一北京时间 **06:23** 检查上游；也可在 Actions → Update rules → Run workflow 手动运行。GitHub 排程可能延迟。
 
-三个任务独立运行、独立建立更新 PR，分支分别为 `automation/update-cn-services`、`automation/update-global-direct`、`automation/update-explicit-proxy`。没有规则变化就不提交、不创建空 PR；不会自动合并到 main。PR 合并后，原始下载链接自然提供新版本。
+八个域名更新任务独立运行、独立建立更新 PR，分支分别为 `automation/update-cn-services`、`automation/update-global-direct`、`automation/update-explicit-proxy`、`automation/update-youtube`、`automation/update-x`、`automation/update-chatgpt`、`automation/update-claude`、`automation/update-gemini`。没有规则变化就不提交、不创建空 PR；不会自动合并到 main。PR 合并后，原始下载链接自然提供新版本。
 
 自动化不需要个人 token，使用本仓库的临时 `GITHUB_TOKEN`。仓库 Actions 设置需要允许 GitHub Actions 创建 PR。只有更新任务有 contents/pull-requests 写权限；普通检查为只读。Action 依赖固定到完整 commit，远程上游仅作为数据读取，不执行其脚本。
 

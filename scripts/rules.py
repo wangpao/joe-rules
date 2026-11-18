@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Maintain three service-grouped .list files. Python standard library only."""
+"""Maintain service-grouped .list files. Python standard library only."""
 import argparse
 from collections import defaultdict
 from dataclasses import dataclass, field
@@ -10,7 +10,10 @@ import subprocess
 import tarfile
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ('cn-services.list', 'global-direct.list', 'explicit-proxy.list')
+DIRECT_FILES = ('cn-services.list', 'global-direct.list')
+CORE_FILES = DIRECT_FILES + ('explicit-proxy.list',)
+SERVICE_PROXY_FILES = ('youtube.list', 'x.list', 'chatgpt.list', 'claude.list', 'gemini.list')
+FILES = CORE_FILES + SERVICE_PROXY_FILES
 UPSTREAM = 'v2fly/domain-list-community'
 SHA = re.compile(r'[0-9a-f]{40}')
 BROAD = {'apple.com','icloud.com','microsoft.com','googleapis.com','gstatic.com',
@@ -97,6 +100,15 @@ def render(doc):
 
 def all_rules(doc): return [r for g in doc.groups for r in g.rules]
 
+def disjoint_pair(a, b):
+    # Standalone service proxy lists mirror subsets of explicit-proxy.list,
+    # so they may overlap with explicit-proxy.list or each other, never with direct lists.
+    if a in SERVICE_PROXY_FILES and b in SERVICE_PROXY_FILES:
+        return False
+    if {a, b} & set(SERVICE_PROXY_FILES) and 'explicit-proxy.list' in (a, b):
+        return False
+    return True
+
 def check(docs):
     for name,doc in docs.items():
         rules=all_rules(doc)
@@ -108,6 +120,7 @@ def check(docs):
     names=list(docs)
     for i,name in enumerate(names):
         for other in names[i+1:]:
+            if not disjoint_pair(name,other): continue
             for a in all_rules(docs[name]):
                 for c in all_rules(docs[other]):
                     if overlap(a,c): raise ValueError(f'Cross-list conflict: {name} {a} / {other} {c}')
@@ -215,7 +228,8 @@ def main():
     for g in doc.groups:
         for r in g.rules:
             if not supported(r,old.group(g)): raise ValueError(f'Baseline source does not support {g.name}: {r}')
-    changes,skipped=update(doc,old,new,revision,'PROXY' if args.target=='explicit-proxy.list' else 'DIRECT')
+    action='DIRECT' if args.target in DIRECT_FILES else 'PROXY'
+    changes,skipped=update(doc,old,new,revision,action)
     check(docs)
     before=parse((args.root/args.target).read_text())
     removed=set(all_rules(before))-set(all_rules(doc))
@@ -225,7 +239,7 @@ def main():
     if changes: (args.root/args.target).write_text(render(doc))
     report='\n'.join(['## '+args.target,'',f'Upstream: https://github.com/{UPSTREAM}/compare/{old_revision}...{revision}',
         '', 'Changes are based on source data, not live connectivity testing.',
-        'Only this list is changed. All three lists passed overlap checks and regression tests run in this workflow.',
+        'Only this list is changed. All rule lists passed overlap checks and regression tests run in this workflow.',
         '',*(changes or ['No rule changes; source revision left unchanged to avoid empty PRs.']),
         '',f'Skipped unsafe/overbroad new candidates: {len(skipped)}',*['- '+x for x in skipped[:30]]])+'\n'
     if args.report: args.report.write_text(report)
